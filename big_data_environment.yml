@@ -11,4 +11,6 @@ dependencies:
   - seaborn=0.13.2
   - scipy>=1.15
   - matplotlib=3.10.0
+  - pyqt
+  - nbconvert
   - jupyter-book=1.0

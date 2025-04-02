@@ -4,8 +4,7 @@ author: University of Groningen, Department of Human Movement Sciences
 logo: logo.png
 
 execute:
-  execute_notebooks: auto
-  exclude_patterns: ["features/*models*"]
+  execute_notebooks: force
   timeout: 300
   allow_errors: false
   nb_output_stderr: error
