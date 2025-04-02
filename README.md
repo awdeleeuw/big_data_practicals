@@ -9,6 +9,7 @@ The most up to date version of the practicals can be found [here](https://big-da
 1. Clone this repository
 2. Install the conda environment: `conda env create --file big_data_environment.yml`
 3. Build the jupyter book: `jupyter-book build practicals_jn_book --all -W`
+4. Build raw python files from jupyter book: `jupyter nbconvert --to script practicals_jn_book/*/*.ipynb`
 
 # License
 
