@@ -180,7 +180,7 @@ plt.show()
 # 
 # This was already quite interesting, as we found out that the 3 categories used by the doctor might not be sufficient to explain the variance among patients, maybe a data-driven doctor could even come to a more reliable diagnosis! 
 # 
-# However, before upsetting everyone in a white coat, we should also re-emphasize that clustering is not perfect, and our model definetly had some limimations. For starters, our silhouette scores of around 0.3 indicate a lot of cluster overlap, which is not ideal for diagnosising patients, we might still need that doctor in the end. 
+# However, before upsetting everyone in a white coat, we should also re-emphasize that clustering is not perfect, and our model definitely had some limitations. For starters, our silhouette scores of around 0.3 indicate a lot of cluster overlap, which is not ideal for diagnosing patients, we might still need that doctor in the end. 
 # 
 # But maybe, we can find a model that performs better than K-Means, and still beat the doctor after all. 
 # 
