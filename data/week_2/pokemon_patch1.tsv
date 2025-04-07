@@ -1,4 +1,4 @@
-	#	Name	HP	Attack	Defense	Sp. Atk	Sp. Def	Speed	Generation	Legendary	Version	Types
+Unnamed: 0	#	Name	HP	Attack	Defense	Sp. Atk	Sp. Def	Speed	Generation	Legendary	Version	Types
 0	127	Seadra	55	65	95	95	45	85	1	False	Patch 1	Water
 1	675	Cubchoo	55	70	40	60	40	40	5	False	Patch 1	Ice
 2	431	Deoxys Defense Forme	50	70	160	70	160	90	3	True	Patch 1	Psychic
@@ -108,7 +108,7 @@
 106	159	Moltres	90	100	90	125	85	90	1	True	Patch 1	Fire-Flying
 107	677	Cryogonal	70	50	30	95	135	105	5	False	Patch 1	Ice
 108	140	Magikarp	20	10	55	15	20	80	1	False	Patch 1	Water
-109	998	R. Jansen	850	999	999	999	800	900	1	True	Patch 1	Dragon-Rock
+109	998	Donald Duck	850	999	999	999	800	900	1	True	Patch 1	Dragon-Rock
 110	754	Aromatisse	101	72	72	99	89	29	6	False	Patch 1	Fairy
 111	671	Chandelure	60	55	90	145	90	80	5	False	Patch 1	Ghost-Fire
 112	43	Vulpix	38	41	40	50	65	65	1	False	Patch 1	Fire
@@ -401,7 +401,7 @@
 399	199	Marill	70	20	50	20	50	40	2	False	Patch 1	Water-Fairy
 400	235	Teddiursa	60	80	50	50	50	40	2	False	Patch 1	Normal
 401	527	Gallade	68	125	65	65	115	80	4	False	Patch 1	Psychic-Fighting
-402	999	M. Kempe	800	999	999	999	900	850	1	True	Patch 1	Psychic-Rock
+402	999	Mickey Mouse	800	999	999	999	900	850	1	True	Patch 1	Psychic-Rock
 403	612	Sandile	50	72	35	35	35	65	5	False	Patch 1	Ground-Dark
 404	744	Pangoro	95	124	78	69	71	58	6	False	Patch 1	Fighting-Dark
 405	49	Oddish	45	50	55	75	65	30	1	False	Patch 1	Grass-Poison
@@ -496,7 +496,7 @@
 494	444	Staraptor	85	120	70	50	60	100	4	False	Patch 1	Normal-Flying
 495	771	Sylveon	95	65	65	110	130	60	6	False	Patch 1	Fairy
 496	274	Grovyle	50	65	45	85	65	95	3	False	Patch 1	Grass
-497	997	L. Forcher	900	999	999	999	850	800	1	True	Patch 1	Electric-Rock
+497	997	Goofy	900	999	999	999	850	800	1	True	Patch 1	Electric-Rock
 498	792	Noivern	85	70	80	97	80	123	6	False	Patch 1	Flying-Dragon
 499	158	Zapdos	90	90	85	125	90	100	1	True	Patch 1	Electric-Flying
 500	471	Gastrodon	111	83	68	92	82	39	4	False	Patch 1	Water-Ground

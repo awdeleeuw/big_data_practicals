@@ -266,8 +266,9 @@ df_lifters  # sometimes I don't use print, this is a feature of IPython/Jupyter
 
 df_lifters[["Firstname", "Surname"]] = df_lifters["Name"].str.split(expand=True)
 
-df_lifters["Firstname"] = df_lifters["Firstname"].str.replace(" ", "")
-df_lifters["Surname"] = df_lifters["Surname"].str.replace(" ", "")
+df_lifters["Firstname"].str.replace(" ", "")
+df_lifters["Surname"].str.replace(" ", "")
+
 df_lifters.rename(columns={"Name": "Fullname"}, inplace=True)
 
 df_lifters = df_lifters[["Fullname", "Firstname", "Surname", "Age", "Totalkg"]]

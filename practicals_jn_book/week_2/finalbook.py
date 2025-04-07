@@ -1,12 +1,9 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[3]:
+# In[9]:
 
 
-import sys
-import os
-import warnings
 import platform
 
 import numpy as np
@@ -29,7 +26,7 @@ print(f"My Seaborn version is: {sns.__version__}")
 # 
 # ## Basic inspection
 # 
-# Before you can do anything you need to load the dataset into memory. Get the dataset from Brightspace: pokemon_patch1.tsv
+# Before you can do anything you need to load the dataset into memory. Get the dataset from GitHub: [pokemon_patch1.tsv](https://github.com/Alek050/big_data_practicals/tree/main/data/week_2)
 # 
 # ### Assignment 0: load data
 # 
@@ -39,7 +36,7 @@ print(f"My Seaborn version is: {sns.__version__}")
 # ```python
 # import os
 # file = "pokemon_patch1.tsv"
-# path = os.getcwd() # returns a string towards your current directory, e.g. "C:/Documents/Big_data/practical_2"
+# path = os.getcwd() # returns a string towards your current working directory, e.g. "C:/Documents/Big_data/practical_2"
 # file_loc = os.path.join(path, file) # "C:/Documents/Big_data/practical_2/pokemon_patch1.tsv"
 # df = pd.read_csv(file_loc, ...)
 # ```
@@ -51,11 +48,11 @@ print(f"My Seaborn version is: {sns.__version__}")
 # For the last exercise you can either use a boolean index or use ``.set_index()`` and ``.loc``.
 # ```
 # ````
-# - **Everyone has a favorite Pokemon, try to find yours in the data. If you don't have one, ask Matthias for his.** 
+# - **Everyone has a favorite Pokemon, try to find yours in the data. If you don't have one, find Caterpie and Pikachu.** 
 # 
 # You should get something like this:
 
-# In[4]:
+# In[21]:
 
 
 import os
@@ -97,7 +94,7 @@ print(df_pokemon[df_pokemon["Name"] == "Pikachu"])  # boolean index
 # ````
 # - **How many unique values are present in the types column?**
 
-# In[5]:
+# In[23]:
 
 
 print(df_pokemon.info(), "\n")
@@ -123,7 +120,7 @@ print(f"Number of unique types = {df_pokemon['Types'].nunique()}")
 # 
 # You should get something like this
 
-# In[6]:
+# In[24]:
 
 
 df_pokemon.drop('Unnamed: 0', axis=1, inplace=True)
@@ -145,7 +142,7 @@ df_pokemon.head(10)
 # 
 # You should get something like this:
 
-# In[7]:
+# In[25]:
 
 
 df_pokemon.columns = df_pokemon.columns.str.replace(" ", "")
@@ -163,7 +160,7 @@ print(df_pokemon.isnull().sum())
 # 
 # You should get something like this:
 
-# In[8]:
+# In[26]:
 
 
 print(df_pokemon[df_pokemon["Name"].isnull() == True], "\n\n")  # OR
@@ -177,7 +174,7 @@ print(df_pokemon[df_pokemon["Name"].isnull()])  # if not specified, it only sele
 # 
 # You should get something like this:
 
-# In[9]:
+# In[27]:
 
 
 df_pokemon.loc[[1, 2, 3, 63], "Name"] = ["Bulbasaur", "Ivysaur", "Venusaur", "Primeape"]
@@ -218,7 +215,7 @@ print(df_pokemon.isnull().sum())
 # 
 # You can of course specify much more, but this is how this looks like:
 
-# In[10]:
+# In[28]:
 
 
 plt.style.use('default')
@@ -266,7 +263,7 @@ plt.show()
 # You might need to call ``plt.show()`` to display the results of your efforts.
 # 
 
-# In[11]:
+# In[29]:
 
 
 plt.style.use("seaborn-v0_8-whitegrid")
@@ -288,11 +285,9 @@ plt.show()
 # 
 # Feature scaling through standardization (or Z-score normalization) can be an important preprocessing step for many machine learning algorithms. Standardization involves rescaling the features such that they have the properties of a standard normal distribution with a mean of zero and a standard deviation of one.
 # 
-# While many algorithms (such as SVM, K-nearest neighbors, and logistic regression) require features to be normalized, intuitively we can think of Principle Component Analysis (PCA) as being a prime example of when normalization is important. In PCA we are interested in the components that maximize the variance. If one component (e.g. human height) varies less than another (e.g. weight) because of their respective scales (meters vs. kilos), PCA might determine that the direction of maximal variance more closely corresponds with the ‘weight’ axis, if those features are not scaled. As a change in height of one meter can be considered much more important than the change in weight of one kilogram, this is clearly incorrect.
-# 
 # Z-score normalization is extremely sensitive to outliers, but we can also use it to detect outliers, as we will do in the next exercise. Seems reasonable right? Currently, the distribution of our data looks like this (ouch!):
 
-# In[12]:
+# In[30]:
 
 
 with sns.axes_style("darkgrid"):
@@ -320,7 +315,7 @@ with sns.axes_style("darkgrid"):
 # 
 # You should get something like this:
 
-# In[13]:
+# In[31]:
 
 
 df_pokemon['HP_z'] = (df_pokemon["HP"] - df_pokemon["HP"].mean()) / df_pokemon["HP"].std()
@@ -353,7 +348,7 @@ plt.show()
 # 
 # You should get something like this
 
-# In[14]:
+# In[32]:
 
 
 target_cols = ["HP_z", "Attack_z", "Defense_z", "Sp.Atk_z", "Sp.Def_z", "Speed_z"]
@@ -380,7 +375,7 @@ print(all_outlier["Name"])
 # 
 # - **Make a scatterplot for "HP" vs "#" for all pokemons, using object-oriented plotting**
 # - **Make a scatterplot for "HP" vs "#" for any outlier, in the same figure but in a different color, still using object-oriented plotting**
-# - **Look up the documentation for ax.text(). Add the name of M. Kempe to the figure at his x and y coordinates**
+# - **Look up the documentation for ax.text(). Add the name of Donald Duck to the figure at his x and y coordinates**
 # ````{margin}
 # ```{admonition} Tip
 # :class: tip
@@ -389,7 +384,7 @@ print(all_outlier["Name"])
 # ````
 # - **Do the same for the other outliers from any_outlier, remember we do not like repetition.**
 
-# In[15]:
+# In[33]:
 
 
 fig, ax = plt.subplots()
@@ -401,15 +396,15 @@ ax.legend()
 
 ax.scatter(any_outlier["#"], any_outlier["HP"], color="C1")
 
-Mkempe = all_outlier.set_index('Name').loc['M. Kempe', :]
-ax.text(Mkempe["#"], Mkempe["HP"], 'M. Kempe')
+donald_duck = all_outlier.set_index('Name').loc['Donald Duck', :]
+ax.text(donald_duck["#"], donald_duck["HP"], 'Donald Duck')
 for index, row in any_outlier.iterrows():
     ax.text(row["#"], row["HP"], row["Name"])
 
 
 # ### Assignment 8: dropping outliers
 # 
-# It appears they were not outliers after all. What actually happened is that the stats for the lecturers got entered into the dataset. No problem, you can just drop those rows. Remember how to use drop?
+# It appears they were not outliers after all. What actually happened is that the stats for some Disney figures got entered into the dataset. No problem, you can just drop those rows. Remember how to use drop?
 # ````{margin}
 # ```{admonition} Tip
 # :class: tip
@@ -418,22 +413,18 @@ for index, row in any_outlier.iterrows():
 # ````
 # - **Drop the rows containing outliers in all specified columns.**
 
-# In[16]:
+# In[34]:
 
 
 df_pokemon.drop(all_outlier.index, inplace=True)
 
 
-# This would be the moment when I tell you there is actually a function that can z-transform your data. We need to repeat the process anyways as we have deleted some of our data and need to rescale to our new DataFrame. Most normalization procedures are very sensitive to outliers so it's a good thing that we got rid of them. ``sklearn`` provides two convenient ways to scale your data. You either use the scale function from the preprocessing library or you use the richer StandardScaler utility class. Either way you want to import both:
+# This would be the moment when I tell you there is actually a function that can z-transform your data. We need to repeat the process anyways as we have deleted some of our data and need to rescale to our new DataFrame. Most normalization procedures are very sensitive to outliers so it's a good thing that we got rid of them. ``sklearn`` provides a convenient way to scale your data. You use the  StandardScaler utility class. Lets import the module class!:
 # ```python
-# from sklearn.preprocessing import scale
 # from sklearn.preprocessing import StandardScaler
 # ```
-# With scale you can just plug in the array and you get an array back that we can assign to our DataFrame, as such:
-# ```python
-# pokemon[target_cols] = scale(pokemon[to_norm_cols])
-# ```
-# With the StandardScaler you need to use the ``.fit_transform`` method. As it is a utility class you can set a lot of parameters and it also has a few methods. [Classes](https://realpython.com/python3-object-oriented-programming/) are very useful, but maybe somewhat unfamiliar, for this course you just need to know how to use them. If we want to achieve the same thing as we did above we can just initialize the object using ``()`` (this basically "spawns" the object) and then immediately use the ``.fit_transform`` method, as such:
+# 
+# With the StandardScaler you need to use the ``.fit_transform`` method. As it is a utility class you can set a lot of parameters and it also has a few methods. [Classes](https://realpython.com/python3-object-oriented-programming/) are very useful, but maybe somewhat unfamiliar, for this course you just need to know how to use them. If we want to achieve the same thing as we did above we can just initialize the object using ``()`` (this basically "spawns" or "initializes" the object) and then immediately use the ``.fit_transform`` method, as such:
 # 
 # ```python
 # pokemon[target_cols] = StandardScaler().fit_transform(pokemon[to_norm_cols])
@@ -453,13 +444,11 @@ df_pokemon.drop(all_outlier.index, inplace=True)
 # 
 # You should get something like this:
 
-# In[17]:
+# In[35]:
 
 
-from sklearn.preprocessing import scale
 from sklearn.preprocessing import StandardScaler
 
-# df_pokemon[target_cols] = scale(df_pokemon[to_norm_cols])  # alternatively use this one
 df_pokemon[target_cols] = StandardScaler().fit_transform(df_pokemon[to_norm_cols])
 plt.hist(x=df_pokemon['HP_z'], bins=30)
 plt.show()
@@ -484,7 +473,7 @@ plt.show()
 # You should get something like this:
 # 
 
-# In[18]:
+# In[36]:
 
 
 from scipy.stats import gaussian_kde, normaltest
@@ -508,7 +497,7 @@ plt.show()
 # - **Use sns.displot to create a similar figure to the one you produced before. That was a lot faster, right?**
 # - **Give it an x and ylabel by using matplotlib.**
 
-# In[19]:
+# In[37]:
 
 
 sns.set_theme()
@@ -570,7 +559,7 @@ plt.show()
 # 
 # You should get something like this:
 
-# In[20]:
+# In[ ]:
 
 
 def calc_special(sp_atk, sp_def, legendary):
@@ -634,7 +623,7 @@ print(f"Moltres has a special score of {calc_special(Moltres['Sp.Atk'], Moltres[
 # 
 # You should get something like this:
 
-# In[21]:
+# In[ ]:
 
 
 df_pokemon["special"] = df_pokemon.apply(lambda row: calc_special(row['Sp.Atk'], row['Sp.Def'], row['Legendary']), axis=1)
@@ -645,7 +634,7 @@ print(top_pokemons.head(5), "\n")
 
 # ## Melting and pivoting data
 # 
-# Oftentimes we need our data in a Tidy format, you learned what Tidy data is in the lecture. To learn more about this format you can read the paper on Nestor.
+# Oftentimes we need our data in a tidy (or long) format, you learned what tidy data is in the lecture.
 # 
 # To get our data in a long format we can use ``.melt()``. The top-level ``melt()`` function and the corresponding ``DataFrame.melt()`` are useful to massage a DataFrame into a format where one or more columns are identifier variables, while all other columns, considered measured variables, are “unpivoted” to the row axis, leaving just two non-identifier columns, “variable” and “value”. The names of those columns can be customized by supplying the var_name and value_name parameters. This image illustrates what happens when you melt a DataFrame:
 # 
@@ -662,7 +651,7 @@ print(top_pokemons.head(5), "\n")
 # 
 # You should get something like this:
 
-# In[22]:
+# In[ ]:
 
 
 to_drop = ['HP_z', 'Attack_z', 'Defense_z', 'Sp.Atk_z', 'Sp.Def_z', 'Speed_z', 'Types']
@@ -678,7 +667,7 @@ df_pokemon.head()
 # ````
 # - **Now melt the "stats" columns of the DataFrame with ``.melt()``. Sort by name and print the head. (stats columns are the HP, Attack, Defense, Sp.Atk, Sp.Df and Speed)** 
 
-# In[23]:
+# In[ ]:
 
 
 df_pokemon_melted = df_pokemon.melt(["Name", "#", "Generation", "Version", "Legendary"]).sort_values("Name")
@@ -694,7 +683,7 @@ df_pokemon_melted.head()
 # 
 # You should get something like this:
 
-# In[24]:
+# In[ ]:
 
 
 df_pokemon_melted.pivot(index="Name", columns="variable", values="value").head()
@@ -710,7 +699,7 @@ df_pokemon_melted.pivot(index="Name", columns="variable", values="value").head()
 # 
 # You should get something like this:
 
-# In[25]:
+# In[ ]:
 
 
 df_pokemon_melted.pivot_table(index=["Name", "#", "Generation", "Version", "Legendary"], 
@@ -735,7 +724,7 @@ df_pokemon_melted.pivot_table(index=["Name", "#", "Generation", "Version", "Lege
 # 
 # You should get something like this:
 
-# In[26]:
+# In[ ]:
 
 
 stats = ['HP', 'Attack', 'Defense', 'special']
@@ -755,7 +744,7 @@ print(df_pokemon.groupby(["Generation", "Legendary"])[stats].mean())
 # ```
 # - **Plot the mean HP for each Generation and seperately for Legendary in a barplot.**
 
-# In[27]:
+# In[ ]:
 
 
 df_pokemon["Legendary_str"] = df_pokemon["Legendary"].astype(str)
@@ -774,7 +763,7 @@ plt.show()
 # 
 # You should get something like this:
 
-# In[28]:
+# In[ ]:
 
 
 df_pokemon.sort_values(["HP"], ascending=False).drop_duplicates("Generation").sort_values("Generation")
@@ -784,7 +773,7 @@ df_pokemon.sort_values(["HP"], ascending=False).drop_duplicates("Generation").so
 # 
 # - **Try to see if there is [power-creep](https://en.wikipedia.org/wiki/Glossary_of_video_game_terms#Power_creep) between generations. Use swarmplot from the seaborn library to plot the Pokemon attack per generation and make sure to highlight the Legendary pokemons.**
 
-# In[29]:
+# In[ ]:
 
 
 sns.swarmplot(x="Generation", y="Attack", data=df_pokemon, hue='Legendary_str', size=4.)
