@@ -30,7 +30,7 @@
 #                 - WDBC-Malignant
 #                 - WDBC-Benign
 
-# In[ ]:
+# In[5]:
 
 
 import os
@@ -42,7 +42,7 @@ import seaborn as sns
 from scipy.stats import *
 import matplotlib.pyplot as plt
 
-from sklearn.preprocessing import scale
+from sklearn.preprocessing import StandardScaler
 
 pd.options.mode.chained_assignment = None
 
@@ -54,25 +54,20 @@ print(f"My Seaborn version is: {sns.__version__}")
 
 # ### Assignment 0: load and inspect data
 # 
-# The breast cancer dataset is available on Brightspace. It's a pickled DataFrame. You can read it with the pickle module, but pandas also provides the convenient ``read_pickle()`` function. 
+# The breast cancer dataset is available on the [GitHub](https://github.com/Alek050/big_data_practicals/tree/main/data/week_3). It's a binary DataFrame. Pandas also provides the convenient ``read_parquet()`` function. Parquet files are binary representations of tabular data, making it extremely fast with human readable formats such as csv and excel files. 
 # 
-# ```{warning}
-# Pickle files are byte streams created by Python which makes it insanely fast compared to reading in csv files. You can not read them with an IDE like Spyder. However, when loading in, it immediately runs in Python. This makes it a very interesting tool for hackers to put their programs on. Make sure to only read in trusted pickle files!
-# ```
-# 
-# - **Read the data with the ``read_pickle()`` function and check what type it returns by using ``.type()``.**
+# - **Read the data with the ``read_parquet()`` function and check what type it returns by using ``type()``.**
 # - **Print the head of the DataFrame.**
 # - **Describe the DataFrame**
 # 
 # You should get something like this:
 
-# In[2]:
+# In[6]:
 
 
-path = os.getcwd()
-file = "breast_cancer.pickle"
-file_loc = os.path.join(path, file)
-df_cancer = pd.read_pickle(file_loc)
+file = "breast_cancer.parquet"
+file_path  = os.path.join(os.path.dirname(__file__), file)
+df_cancer = pd.read_parquet(file_path)
 print(type(df_cancer))
 print(df_cancer.head())
 print(df_cancer.describe())
@@ -88,7 +83,7 @@ print(df_cancer.describe())
 # - **Convert cclass to a categorical variable and print out the unique categories.**
 # - **Count the missing values in every column.**
 
-# In[3]:
+# In[7]:
 
 
 df_cancer.columns = df_cancer.columns.str.replace(" ", "_")
@@ -137,7 +132,7 @@ print(df_cancer.isnull().sum())  # any returns True if any element is true
 # 
 # You should get something like this:
 
-# In[4]:
+# In[8]:
 
 
 mean_cols = [col for col in df_cancer.columns if 'mean' in col]
@@ -161,11 +156,11 @@ df_cancer.isnull().any().any()  # chaining any gives try if any element is try f
 # 
 # You should get something like this:
 
-# In[5]:
+# In[9]:
 
 
 mean_cols.append("cclass")  # we'll also need this column
-#mean_cols += ["cclass"]  # does the same thing
+# mean_cols += ["cclass"]  # does the same thing
 print(mean_cols, "\n")
 
 df_subcancer = df_cancer[mean_cols]
@@ -179,7 +174,7 @@ print(df_subcancer.head())
 # 
 # You should get something like this:
 
-# In[6]:
+# In[10]:
 
 
 print(df_subcancer.median(numeric_only=True), "\n")
@@ -201,7 +196,7 @@ print(df_subcancer["cclass"].value_counts())
 # 
 # You should get something like this:
 
-# In[7]:
+# In[11]:
 
 
 df_subbenign = df_subcancer[df_subcancer.cclass == "benign"]
@@ -217,7 +212,7 @@ print(df_subbenign.shape, df_submalig.shape)  # shape is an attribute not a meth
 # 
 # You should get something like this:
 
-# In[8]:
+# In[12]:
 
 
 with plt.style.context("dark_background"):  # stylesheet example with context manager
@@ -239,7 +234,7 @@ with plt.style.context("dark_background"):  # stylesheet example with context ma
 # 
 # You should get something like this:
 
-# In[9]:
+# In[13]:
 
 
 with plt.style.context("seaborn-v0_8-darkgrid"):
@@ -257,12 +252,12 @@ with plt.style.context("seaborn-v0_8-darkgrid"):
 # 
 # You should get something like this:
 
-# In[10]:
+# In[14]:
 
 
 with plt.style.context("seaborn-v0_8-darkgrid"):
-    fig, ax = plt.subplots(figsize=[5, 5])  # note that we now use object-orientied (OO) plotting
-    sns.histplot(df_subbenign["mean_radius"], kde=True, label="benign", edgecolor=None, ax=ax, alpha=0.4)  # note the ax=ax in the OO-way
+    fig, ax = plt.subplots(figsize=[5, 5])  
+    sns.histplot(df_subbenign["mean_radius"], kde=True, label="benign", edgecolor=None, ax=ax, alpha=0.4)  
     sns.histplot(df_submalig["mean_radius"], kde=True, label="malignant", edgecolor=None, ax=ax, alpha=0.4)
     ax.set_ylabel("frequency")
     ax.legend()
@@ -284,7 +279,7 @@ with plt.style.context("seaborn-v0_8-darkgrid"):
 # 
 # You should get something like this:
 
-# In[11]:
+# In[15]:
 
 
 fig, axes = plt.subplots(5, 2, figsize=[15, 10])  # 10 axes in 1 figure
@@ -297,14 +292,15 @@ for i_ax, col in zip(ax, df_subbenign):  # cols are the same so it does not matt
     i_ax.set_ylabel("frequency")
 ax[0].legend()
 plt.tight_layout()    
+plt.show()
 
 
 # ### Assignment 4: scale variables
 # 
-# Alternatively you might want to use a boxplot to assess the distribution of your data. Regarding boxplots, pandas actually provides a very nice ``.boxplot`` method on your DataFrame. We did not handle this way of plotting extensively but we want you to try it out. Just call the ``.boxplot`` on your dataframe.
+# Alternatively you might want to use a boxplot to assess the distribution of your data. Regarding boxplots, pandas actually provides a very nice ``.boxplot`` method on your DataFrame. We did not cover this way of plotting extensively but we want you to try it out. Just call the ``.boxplot`` on your dataframe.
 # 
 # ::::{important}
-# While we are approaching machine learning, scaling your data becomes **really important**!! We need to make sure that our variables are on a similar scale. You can do so with ``StandardScaler`` or ``scale`` from the sklearn package. Note that you can only scale floats so make sure you don't try to scale the "cclass" column.
+# While we are approaching machine learning, scaling your data becomes **really important**!! We need to make sure that our variables are on a similar scale. You can do so with ``StandardScaler`` from the sklearn package. Note that you can only scale floats so make sure you don't try to scale the "cclass" column.
 # ::::
 # 
 # 
@@ -313,11 +309,12 @@ plt.tight_layout()
 # 
 # You should get something like this:
 
-# In[12]:
+# In[16]:
 
 
 floatcols = df_subcancer.columns[:-1]
-df_subcancer[floatcols] = scale(df_subcancer[floatcols])
+scaler = StandardScaler()
+df_subcancer[floatcols] = scaler.fit_transform(df_subcancer[floatcols])
 df_subcancer.boxplot(by="cclass", figsize=(15, 10), layout=(2, 5))
 plt.show()
 
@@ -334,7 +331,7 @@ plt.show()
 # 
 # You should get something like this:
 
-# In[13]:
+# In[17]:
 
 
 fig, axes = plt.subplots(2, 5, figsize=[15, 15])  # 10 axes in 1 figure
@@ -347,6 +344,7 @@ for i_ax, col in zip(ax, df_subcancer):
 
 plt.suptitle('Differences between bengin and malignant cases', weight='bold', fontsize=18)
 plt.tight_layout()    
+plt.show()
 
 
 # This figure can tell us a lot. We can already guesstimate some of our statistical outcomes from the notches in the plot. Although not officially, if the two notches don't overlap there is strong evidence that the medians differ! More formal testing will come later though.
@@ -355,7 +353,7 @@ plt.tight_layout()
 # 
 # - **Use groupby to find the mean and standard deviation for all columns grouped by "cclass". Print the outcome**
 
-# In[14]:
+# In[18]:
 
 
 print(df_subcancer.groupby("cclass", observed=False).agg(['mean', 'std']))
@@ -377,7 +375,7 @@ print(df_subcancer.groupby("cclass", observed=False).agg(['mean', 'std']))
 # 
 # You should get something like this:
 
-# In[15]:
+# In[19]:
 
 
 plt.figure(figsize=(8, 8))
@@ -402,7 +400,7 @@ plt.show()
 # 
 # You should get something like this:
 
-# In[16]:
+# In[20]:
 
 
 from numpy.polynomial.polynomial import polyfit
@@ -426,11 +424,10 @@ plt.show()
 # 
 # You should get something like this:
 
-# In[17]:
+# In[21]:
 
 
 from sklearn.metrics import r2_score
-
 
 r2_score(df_subcancer.mean_concave_points, y_pred)
 
@@ -445,33 +442,34 @@ r2_score(df_subcancer.mean_concave_points, y_pred)
 # 
 # You should get something like this.
 
-# In[18]:
+# In[22]:
 
 
 j = sns.jointplot(df_subcancer, x="mean_concavity", y="mean_concave_points", kind="reg")
 r = pearsonr(df_subcancer.mean_concavity, df_subcancer.mean_concave_points)
 r_squared = np.round(r[0]**2, 4)
 j.ax_joint.annotate(f"Pearson: r={r_squared}", (-1, 4))
+plt.show()
 
 
 # ## PCA
 # 
-# As you saw, the mean_concave_points and the mean_concavity were highly correlated. Matthias explained you in the lecture that we should aim for simpler models as they generalize better. If two variables are highly correlated they may give us the same information and we could just use one of them. We could then do this with all variables (features) in our data set which would take a bit or we use an “automatic” approach that put highly correlated variables together. As such, we can use principal component analysis (PCA) to reduce the dimensionality of the dataset. 
+# As you saw, the mean_concave_points and the mean_concavity were highly correlated. We should aim for simpler models as they generalize better to unforseen data. If two variables are highly correlated they may give us the same information and we could just use one of them. We could then do this with all variables (features) in our data set which would take a bit or we use an “automatic” approach that put highly correlated variables together. As such, we can use principal component analysis (PCA) to reduce the dimensionality of the dataset. 
 # 
 # If your learning algorithm is too slow because the input dimension is too high, then using PCA to speed it up can be a reasonable choice. This is probably the most common application of PCA. Another common application of PCA is for data visualization.
 # 
 # In general:
 # 
-#     PCA is used to overcome features redundancy in a data set.
-#     These features are low dimensional in nature.
-#     These features a.k.a components are a resultant of normalized linear combination of original predictor variables.
-#     These components aim to capture as much information as possible with high explained variance.
-#     The first component has the highest variance followed by second, third and so on.
-#     The components must be uncorrelated (remember orthogonal direction ? ).
-#     Normalizing data becomes extremely important when the predictors are measured in different units.
-#     PCA works best on data set having 3 or higher dimensions. Because, with higher dimensions, it becomes increasingly difficult to make interpretations from the resultant cloud of data.
-#     PCA is applied on a data set with numeric variables.
-#     PCA is a tool which helps to produce better visualizations of high dimensional data.
+# - PCA is used to overcome features redundancy in a data set.
+# - These features are low dimensional in nature.
+# - These features (a.k.a components) are a resultant of normalized linear combination of original predictor variables.
+# - These components aim to capture as much information as possible with high explained variance.
+# - The first component has the highest variance followed by second, third and so on.
+# - The components must be uncorrelated (remember orthogonal direction ? ).
+# - Normalizing data becomes extremely important when the predictors are measured in different units (make sure you understand why!).
+# - PCA works best on data set having 3 or higher dimensions. Because, with higher dimensions, it becomes increasingly difficult to make interpretations from the resultant cloud of data.
+# - PCA is applied on a data set with numeric variables.
+# - PCA is a tool which helps to create visualizations of high dimensional (> 3) data.
 # 
 # ### Assignment 9: correlations
 # 
@@ -481,10 +479,11 @@ j.ax_joint.annotate(f"Pearson: r={r_squared}", (-1, 4))
 # 
 # You should get something like this:
 
-# In[19]:
+# In[23]:
 
 
-sns.pairplot(df_subcancer, hue="cclass");
+sns.pairplot(df_subcancer, hue="cclass")
+plt.show()
 
 
 # A heatmap is another way to have more informations regarding the correlation coefficients. First calculate all the correlations of df_subcancer with ``.corr()`` from the pandas library. Make sure you calclate the **Pearson** correlation coefficient. Plot the just calculated coefficients in the heatmap with ``sns.heatmap()``, set annot to True.
@@ -493,12 +492,13 @@ sns.pairplot(df_subcancer, hue="cclass");
 # 
 # - **Plot a heatmap with the correlations and set annot to True.**
 
-# In[20]:
+# In[24]:
 
 
 corr = df_subcancer.corr(method='pearson', numeric_only=True)
 plt.figure(figsize=(10, 10))
-sns.heatmap(corr, annot=True);
+sns.heatmap(corr, annot=True)
+plt.show()
 
 
 # Aha, we see that more variables are highly correlated with each other. So it is interesting to do a PCA.
@@ -509,10 +509,11 @@ sns.heatmap(corr, annot=True);
 # 
 # - **Standardize the full dataset (the one with 30 columns). Use the scaler you used before. Due to the skewness a case can be made for different scalers, but let's not worry too much about that for now.**
 
-# In[21]:
+# In[25]:
 
 
-X_std = scale(df_cancer[df_cancer.columns[:-1]])
+scaler = StandardScaler()
+X_std = scaler.fit_transform(df_cancer[df_cancer.columns[:-1]])
 
 
 # ### Assignment 11: doing PCA
@@ -528,7 +529,7 @@ X_std = scale(df_cancer[df_cancer.columns[:-1]])
 # 
 # You should get something like this:
 
-# In[22]:
+# In[26]:
 
 
 from sklearn.decomposition import PCA
@@ -548,7 +549,7 @@ plt.show()
 # - **Call fit_transform on your standardized variables and save it to a new variable.**
 # - **Print the explained variance ratio and the shape of your transformed array.**
 
-# In[23]:
+# In[27]:
 
 
 pca = PCA(n_components=5)
@@ -570,7 +571,7 @@ X_PCA.shape
 # - **Make also a DataFrame of the columns names (all 30)**
 # - **Find the three variables with the highest contribution to the first feature**
 
-# In[24]:
+# In[28]:
 
 
 print(pca.components_, '\n')
@@ -590,24 +591,20 @@ print(top3)
 # 
 # ## Hypothesis testing
 # 
-# Point estimates such as the mean and median are a nice way to describe the population, but the difference could be cause only by chance, because of the variability of both estimates. R.A. Fisher (1890–
-# 1962) proposed an alternative, known as hypothesis testing, that is based on the
-# concept of statistical significance. We can see that the mean_radius for benign and malignant cells is different, but is this due to chance or can we consider them as belonging to two different populations. Then, the relevant question is: Are the observed effects real or not?
+# Point estimates such as the mean and median are a nice way to describe the population, but the difference could be cause only by chance, because of the variability of both estimates. R.A. Fisher (1890–1962) proposed an alternative, known as hypothesis testing, that is based on the concept of statistical significance. We can see that the mean_radius for benign and malignant cells is different, but is this due to chance or can we consider them as belonging to two different populations. Then, the relevant question is: Are the observed effects real or not?
 # 
 # Technically, the question is usually translated to: Were the observed effects statistically significant?
 # The process of determining the statistical significance of an effect is called hypothesis testing.
 # 
 # This process starts by simplifying the options into two competing hypotheses:
 # 
-# >- H 0 : The mean mean_radius is the same in benign and malignant cells
+# >- H0: the effect we have observed is due to chance (due to the specific sample bias). 
 # >
-# >- H A : The mean mean_radius of benign and malignant cells is different
+# >- H1: the effect we have observed is due to real differences between the groups.
 # 
-# We call H 0 the null hypothesis and it represents a skeptical point of view: the
-# effect we have observed is due to chance (due to the specific sample bias). H A is the
-# alternative hypothesis and it represents the other point of view: the effect is real.
-# The general rule of frequentist hypothesis testing: we will not discard H 0 (and
-# hence we will not consider H A ) unless the observed effect is implausible under H 0 
+# We will not discard H0 unless the observed effect is implausible under H0.
+# 
+# Think of an example what the H0 and H1 are in our dataset.
 # 
 # ### Assignment 12: confidence interval
 # 
@@ -617,19 +614,18 @@ print(top3)
 # estimate, intuitively we can say that we are roughly 95% confident that we have
 # captured the true parameter. (we will make some assumptions here which we will address later)
 # 
-# CI = [mean − 1.96 × SE, mean + 1.96 × SE]
+# CI = [mean − 1.96 × $SE$, mean + 1.96 × $SE$]
 # 
-# The confidence level is equivalent to 1 – the alpha level. So, if your significance level is 0.05, the corresponding confidence level is 95%. Consider the following statements about P-values and confidence intervals:
 # ```{note}
-# If the P value is less than your significance (alpha) level, the hypothesis test is statistically significant.
-# If the confidence interval does not contain the null hypothesis value, the results are statistically significant.
-# If the P value is less than alpha, the confidence interval will not contain the null hypothesis value.
+# - If the P value is less than your significance (alpha) level, the hypothesis test is statistically significant.
+# - If the confidence interval does not contain the null hypothesis value, the results are statistically significant.
+# - If the P value is less than alpha, the confidence interval will not contain the null hypothesis value.
 # ```
 # 
 # ````{margin}
 # ```{admonition} Tip
 # :class: tip
-# The SE can be calculated with se = sample.std() / np.sqrt(len(sample))
+# The $SE$ can be calculated with se = sample.std() / np.sqrt(len(sample))
 # ```
 # ````
 # - **Calculate the confidence interval for the malignant cells.**
@@ -638,7 +634,7 @@ print(top3)
 # 
 # You should get something like this:
 
-# In[25]:
+# In[29]:
 
 
 n = len(df_submalig.mean_radius)
@@ -646,30 +642,18 @@ mean = df_submalig.mean_radius.mean()
 s = df_submalig.mean_radius.std()
 ci = [mean - s*1.96/np.sqrt(n), mean + s*1.96/np.sqrt(n)]
 
-print("Mean radius of malignant cells:", df_submalig.mean_radius.mean())
-print("Mean radius of benign cells:", df_subbenign.mean_radius.mean())
-print("Confidence interval for malignant cells", ci)
+print("Mean radius of malignant cells:", df_submalig.mean_radius.mean().round(2))
+print("Mean radius of benign cells:", df_subbenign.mean_radius.mean().round(2))
+print("Confidence interval for malignant cells", [x_value.round(2) for x_value in ci])
 
 
-# Hypothesis testing is built around rejecting or failing to reject the null hypothesis.
-# That is, we do not reject H 0 unless we have strong evidence against it. But what
-# precisely does strong evidence mean? As a general rule of thumb, for those cases
-# where the null hypothesis is actually true, we do not want to incorrectly reject H 0
-# more than 5% of the time. This corresponds to a significance level of α = 0.05. In
-# this case, the correct interpretation of our test is as follows:
-# ```{note}
-# If we use a 95% confidence interval to test a problem where the null hypothesis is true, we will make an error whenever the point estimate is at least 1.96 standard errors away from the population parameter. This happens about 5% of the time (2.5% in each tail).
-# ```
-#     
-# How about our data?
-# 
 # ### Assignment 13: using statistical testing
 # 
 # Statistical testing in Python is relatively easy. There are two main packages available for regular frequentist statistical testing: [scipy.stats](https://docs.scipy.org/doc/scipy/reference/stats.html) and [statsmodels](https://www.statsmodels.org/stable/index.html). If you like R you will like statsmodels. We will however use scipy.stats as it is the most straightforward.
 # 
-# First, a simple independent t-test. We can use this test, if we observe two independent samples from the same or different population, e.g. exam scores of boys and girls or of two ethnic groups. The test measures whether the average (expected) value differs significantly across samples. If we observe a large p-value, for example larger than 0.05 or 0.1, then we cannot reject the null hypothesis of identical average scores. If the p-value is smaller than the threshold, e.g. 1%, 5% or 10%, then we reject the null hypothesis of equal averages.
+# First, a simple independent t-test. The test measures whether the average (expected) value differs significantly across samples. If we observe a large p-value, for example larger than 0.05 or 0.1, then we cannot reject the null hypothesis (H0) of identical average scores. If the p-value is smaller than the threshold, e.g. 1%, 5% or 10%, then we reject the null hypothesis of equal averages.
 # 
-# Let's start by comparing mean_radius between malignant and benign cases. To not anger the statistics lecturers too much we should probably test for a normal distribution and equality of variances first. 
+# Let's start by comparing mean_radius between malignant and benign cases. To not anger the statisticians too much we should probably test for a normal distribution and equality of variances first. 
 # 
 # - **Import shapiro, levene, normaltest, skewtest, and kurtosistest from the scipy.stats sublibrary. Alternatively, just import the entire library with ``from scipy.stats import *``. Be careful with the * strategy, but in this case it is a reasonable thing to do.**
 # 
@@ -677,7 +661,7 @@ print("Confidence interval for malignant cells", ci)
 # 
 # You should get something like this:
 
-# In[26]:
+# In[30]:
 
 
 for df in [df_submalig, df_subbenign]:
@@ -689,7 +673,7 @@ for df in [df_submalig, df_subbenign]:
 
 # OK, we have some issues with normality here, so we will use a non-parametric test later. First, let's do the parametric one anyways.
 # 
-# - **Appease your statistics lectureres by performing a levenes test, simply enter the date into ``levene()``.**
+# - **Appease statisticians by performing a levenes test, simply enter the date into ``levene()``.**
 # ````{margin}
 # ```{admonition} Tip
 # :class: tip
@@ -709,7 +693,7 @@ for df in [df_submalig, df_subbenign]:
 # 
 # You should get something like this:
 
-# In[27]:
+# In[31]:
 
 
 l_test = levene(df_subbenign["mean_radius"], df_submalig["mean_radius"])
@@ -739,7 +723,7 @@ else:
 # 
 # You should get something like this:
 
-# In[28]:
+# In[32]:
 
 
 mann_result = mannwhitneyu(df_subbenign["mean_radius"], df_submalig["mean_radius"])  # non-parametric test
@@ -758,7 +742,6 @@ else:
 # ```{note}
 # The samples are independent. Each sample is from a normally distributed population. The population standard deviations of the groups are all equal. This property is known as homoscedasticity.
 # ```
-# Actually, ANOVA is incredibly robust if you have the same sample sizes. Unfortunately, this is not the case for us. I still want you to perform one though.
 # 
 # - **Perform the same test using ``f_oneway`` from the scipy.stats sublibrary. Print something based on the p-value.**
 # 
@@ -766,7 +749,7 @@ else:
 # 
 # You should get something like this:
 
-# In[29]:
+# In[33]:
 
 
 anova_result = f_oneway(df_subbenign["mean_radius"], df_submalig["mean_radius"])
@@ -789,9 +772,3 @@ else:
 
 
 # Good Job! Now you are ready for the real machine learning fun, see you next week!
-
-# In[ ]:
-
-
-
-

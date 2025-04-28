@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[9]:
+# In[ ]:
 
 
 import platform
@@ -10,7 +10,6 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-get_ipython().run_line_magic('matplotlib', 'inline')
 
 print(f"My Python version is: {platform.python_version()}")
 print(f"My Numpy version is: {np.__version__}")
@@ -30,7 +29,7 @@ print(f"My Seaborn version is: {sns.__version__}")
 # 
 # ### Assignment 0: load data
 # 
-# The data is stored in a .tsv file. It is a tab-separated values file (tab is "\t" in Python and most other major programming languages). You can open the file with Notepad(++) to inspect the contents before you read it in. It is also available [here](https://raw.githubusercontent.com/BWM146/Datasets/master/pokemon_patch1.tsv). To make it easier for yourself, make sure to have your python script in the same directory as your data file. This make it easy to always load in your data in the same way using the `os` module.
+# The data is stored in a .tsv file. It is a tab-separated values file (tab is "\t" in Python and most other major programming languages). You can open the file with Notepad(++) to inspect the contents before you read it in. It is also available [here](https://github.com/Alek050/big_data_practicals/tree/main/data/week_2). To make it easier for yourself, make sure to have your python script in the same directory as your data file. This make it easy to always load in your data in the same way using the `os` module.
 # 
 # - **Make sure your files are in the right directory and specify the `file_name` and `path`.**
 # ```python

@@ -11,9 +11,6 @@ import numpy as np  # then import custom/user packages
 import pandas as pd  # you can use shorter names for easy reference
 import matplotlib.pyplot as plt  # np, pd, and plt are common for these packages
 
-# this is a IPython magic command, you may ignore it
-get_ipython().run_line_magic('matplotlib', 'inline')
-
 print(f"My Python version is: {platform.python_version()}")
 print(f"My Numpy version is: {np.__version__}")
 print(f"My Pandas version is: {pd.__version__}")
@@ -59,10 +56,13 @@ print(f"My Pandas version is: {pd.__version__}")
 # 
 # You should get something like this:
 
-# In[2]:
+# In[5]:
 
 
-df_ipf = pd.read_csv("https://raw.githubusercontent.com/Alek050/big_data_practicals/refs/heads/main/data/week_1/IPF_Worlds.csv")
+# If you have the file locally on you device:
+df_ipf = pd.read_csv("IPF_Worlds.csv")
+# Or ownload it from the web (if it is publicaly available):
+# df_ipf = pd.read_csv("https://raw.githubusercontent.com/Alek050/big_data_practicals/refs/heads/main/data/week_1/IPF_Worlds.csv")
 df_ipf
 
 

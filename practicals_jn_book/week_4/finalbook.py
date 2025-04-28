@@ -161,11 +161,19 @@ X = df[['pac', 'sho', 'pas', 'dri', 'def', 'phy']] # double square brackets, thu
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
 
+# ::::{tip}
+# When functions or algorithms have a stochastic(random) component, setting a `random_state` ensures reproducibility of results by initializing the random number generator to a fixed state. This allows consistent outputs across multiple runs of the code.
+# ::::
+# 
 # Now, that works like a charm, but let's quickly brake down what we actually did based on the provided key-word arguments:
 # 
 # 1. We provided our features (`X`) and outcome (`y`) because this is the data that needs to be split in a training- and a test set. 
 # 
 # 2. We specified a `test_size`. This refers to the relative size of the test-dataset. In this case 0.3 means the test-dataset will contain 30% of the dataset, and the training-dataset will automatically contain 70% of the dataset. 
+# 
+# ::::{note}
+# Depending on the data variance and size of the dataset, a test set size between 0.1 and 0.3 is normally considered.
+# ::::
 # 
 # 3. We specified a random_state. Under the hood the `train_test_split` function randomly draws from the dataset, however, by specificy a random_state we make sure that the function start at the same location every time, so that we have a constant output if we would run our code again. 
 # 
@@ -180,6 +188,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 # ```
 # 
 # or
+# 
 # ```python
 # scaler = StandardScaler()
 # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
@@ -308,7 +317,7 @@ RMSE_poly = np.sqrt(MSE_poly)
 get_ipython().run_cell_magic('capture', '', "print('Linear Regression Model: \\n')\nprint('R^2: %f' %R2)\nprint('RMSE: %f' %RMSE)\nprint('----------')\nprint('Quadratic Regression Model: \\n')\nprint('R^2: %f' %R2_poly)\nprint('RMSE: %f' %RMSE_poly)\n")
 
 
-# ## Taking the next step (bonus)
+# ## Assignment 8
 # 
 # Now that you have trained simple and polynomial regression models it is time for the next step. The previous task was fairly straightforward, as our dataset only contained a limited number of features that were all linked to the outcome variable. 
 # 
