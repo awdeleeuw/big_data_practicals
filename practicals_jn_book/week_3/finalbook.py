@@ -66,7 +66,8 @@ print(f"My Seaborn version is: {sns.__version__}")
 
 
 file = "breast_cancer.parquet"
-df_cancer = pd.read_parquet(file)
+file_path  = os.path.join(os.path.dirname(__file__), file)
+df_cancer = pd.read_parquet(file_path)
 print(type(df_cancer))
 print(df_cancer.head())
 print(df_cancer.describe())
