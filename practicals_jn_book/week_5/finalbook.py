@@ -11,7 +11,7 @@
 # 
 # Start up spyder, open up a new script for today's practical, import the neccesary libraries, and make sure the required dataset is in your current working directory. 
 
-# In[1]:
+# In[2]:
 
 
 import os
@@ -28,7 +28,7 @@ import matplotlib.pyplot as plt
 # 
 # First, import the csv file named 'Biomechanical_Data_UCI' as a pandas dataframe and declare it to a variable named 'df'. Next, inspect df using the .head(), .tail(), .describe(), and .info() methods in the IPython console. 
 
-# In[2]:
+# In[3]:
 
 
 file_path = os.getcwd()
@@ -57,7 +57,7 @@ df.describe()
 # 
 # Apply the .unique() function to the column that has the labels in it, what do you get? 
 
-# In[3]:
+# In[4]:
 
 
 df['class'].unique()
@@ -67,7 +67,7 @@ df['class'].unique()
 # 
 # Apply this function to the class column, first without specifying any keyword arguments, then again while specifying .value_counts(normalize=True). What is the difference? 
 
-# In[4]:
+# In[5]:
 
 
 print(df['class'].value_counts(), "\n")
@@ -80,7 +80,7 @@ print(df['class'].value_counts(normalize=True))
 # 
 # The easiest way to do this is by visualizing the relationships between features in our dataset, and visualizing the differences between Normal and Abnormal patients on individual features. Now, there are more ways to make beautifull visualizations in Python than there are ways to Rome, so feel free to explore this if you have some spare time at the end of the practical. However, to make sure neither of you will get lost if the forest of visualizations, we will use the same method (Seaborn's .pairplot() function) you have already implemented in last weeks practical. The only difference is that we now want to plot the difference between 'Normal' and 'Abnormal' patients as well. To do this, specify hue='class' as a keyword argument. 
 
-# In[5]:
+# In[6]:
 
 
 sns.pairplot(df, hue='class')
@@ -113,7 +113,7 @@ plt.show()
 # 
 # Like last week, we will tell you more about the functions and classes you don't know yet later, but let's start with importing them. 
 
-# In[6]:
+# In[7]:
 
 
 from sklearn.linear_model import LogisticRegression
@@ -128,7 +128,7 @@ from sklearn.metrics import accuracy_score, roc_auc_score, roc_curve
 # 
 # First, we have to create an outcome or target variable called (by convention) `y`. This is the dependent variable (remember the labels?) we will classify. To achieve this, we will extract all values of the column containing the labeled data and put them in a variable we call `y`.
 
-# In[7]:
+# In[8]:
 
 
 y = df['class']
@@ -136,7 +136,7 @@ y = df['class']
 
 # Next, we have to create our input variable called (by convention) `X`, that is made up out of all the features or independent variables in our dataset. There are multiple ways to do this. The easiest way is by specifying all the column names of the features you want to select (remember double brackets). Declare the features to a variable called `X`.
 
-# In[8]:
+# In[9]:
 
 
 X = df[['pelvic_incidence', 'pelvic_tilt numeric', 'lumbar_lordosis_angle', 
@@ -153,7 +153,7 @@ X = df[['pelvic_incidence', 'pelvic_tilt numeric', 'lumbar_lordosis_angle',
 # 
 # First call `.astype('category')` on `y` to change the dtype. Make sure to declare the result back to `y`. Next, use `y.cat.codes` to change the labels in `y` to numbers. Again, make to sure to declare the result back to `y`. Now print `y` to your console, did you succeed? What number represents `'Abnormal'` patients? And what number `'Normal'` patients. 
 
-# In[9]:
+# In[10]:
 
 
 y = y.astype('category')
@@ -200,7 +200,7 @@ y = y.cat.codes
 # 
 # Furthermore, Create variables called X_scaled_train, X_scaled_test, y_train, y_test by using the train_test_split function with X_scaled, y as arguments, and again a test_size of 30% and a random_state. We did not really have to create y_train and y_test again, as they are the same both time. However, as this is the output of the train_test_split function it is easiest to just save the same result again. 
 
-# In[10]:
+# In[11]:
 
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42, stratify=y)
@@ -245,7 +245,7 @@ X_test_scaled = scaler.transform(X_test)
 # 
 # fit all 3 models to the data, remember to use the scaled `X` features for `log_reg` and `knn`, and the raw features for `tree`. After the models are fit, predict and print the accuracy, precision and recall of all models. This you can calculate yourself, or simply load the functions from `sklearn.metrics`. Later we will go into debt on what these scores actually represent. For now just focus the accuracy.
 
-# In[11]:
+# In[12]:
 
 
 from sklearn.metrics import accuracy_score, precision_score, recall_score
@@ -276,7 +276,7 @@ for model, X_test_model in zip([log_reg, knn, tree], [X_test_scaled, X_test_scal
 # 
 # Use cross_validate on the *1 approriate model* for this approach, and print the accuracy, precision and recall. 
 
-# In[12]:
+# In[13]:
 
 
 cv_tree = cross_validate(tree, X, y, cv=5, scoring=['accuracy', 'precision', 'recall'])
@@ -289,7 +289,7 @@ print(cv_tree["test_recall"])
 # 
 # Use `StratifiedKFold()` and adapt `cv=5` to stratify the cross validation. Now redo the analysis and see if it influences the stability of the performance of the model.
 
-# In[13]:
+# In[14]:
 
 
 from sklearn.model_selection import StratifiedKFold
@@ -320,7 +320,7 @@ print(cv_tree["test_recall"])
 # ```
 # ::::
 
-# In[14]:
+# In[15]:
 
 
 def scaled_cross_validation(estimator, X_func, y_func, n_splits, scoring, random_state=42):
@@ -401,7 +401,7 @@ for model_name, performance in scaled_cross_validation.items():
 # 
 # 
 
-# In[15]:
+# In[16]:
 
 
 for model_name, performance in scaled_cross_validation.items():
@@ -421,7 +421,7 @@ for model_name, performance in scaled_cross_validation.items():
 # 
 # To be able to do this, we first need the probabilities of every prediction. We can get these the exact same way as we computed the predict values. The only difference is you have to use the `.predict_proba()` function instead of `.predict()`. Create a variable holding the prediction probabilities called 'probs_*modelname*' for all three models using the `.predict_proba()` function. `predict_proba` stands for "predict probability" and thus shows how certain/confident the model is about the classification.
 
-# In[16]:
+# In[17]:
 
 
 probs_log_reg = log_reg.predict_proba(X_test_scaled)
@@ -438,7 +438,7 @@ probs_tree = tree.predict_proba(X_test)
 # 
 # you specify `[:,1]` because we only need column 1 from the probability array. The first index (`0`) gives the probability for the label 0, in our case Normal, and the second index (`1`) the probability for the label 1 or Abnormal.
 
-# In[17]:
+# In[18]:
 
 
 fpr_log_reg, tpr_log_reg, threshold_log_reg = roc_curve(y_test, probs_log_reg[:,1])
@@ -452,7 +452,7 @@ fpr_tree, tpr_tree, threshold_tree = roc_curve(y_test, probs_tree[:,1])
 # 
 # Now add a title, x-label, y-label and legend to complete the plot. 
 
-# In[18]:
+# In[19]:
 
 
 plt.figure()
@@ -469,7 +469,7 @@ plt.show()
 
 # From inspecting the figure, it seems like a close call between the KNN and the logistic regression. However, we would like to quantify this. To do this, you need to compute the so-called AUC (Area Under the Curve). To do so, use the `roc_auc_score` we imported before. You need the exact same keywords as you used in `roc_curve` functions. Compute the AUC for every roc_curve and declare them to a variable called auc_*modelname* 
 
-# In[19]:
+# In[20]:
 
 
 auc_log_reg = roc_auc_score(y_test, probs_log_reg[:,1])
@@ -502,12 +502,39 @@ plt.show()
 # 
 # Last week you have already learned how to do this in regression models, for the logreg model this works exactly the same. Just call the logreg.coef_ and logreg.intercept_ methods and construct the regression equation. Do this first. 
 
-# In[22]:
+# In[45]:
 
 
 intercept = log_reg.intercept_
 coefs = log_reg.coef_
 reg_eq = 'y = -2.274 + 0.073*pelvic_incidence - 0.851*pelvic_tilt numeric + 0.327*lumbar_lordosis_angle + 0.770*sacral_slope + 1.124*pelvic_radius - 3.641*degree_spondylolisthesis'
+
+linear_prediction = np.clip(
+    intercept[0] 
+    + coefs[0, 0] * X.iloc[:, 0] 
+    + coefs[0, 1] * X.iloc[:, 1]
+    + coefs[0, 2] * X.iloc[:, 2]
+    + coefs[0, 3] * X.iloc[:, 3]
+    + coefs[0, 4] * X.iloc[:, 4]
+    + coefs[0, 5] * X.iloc[:, 5], 
+    a_min=-700, a_max=700 # prevent overflow warning
+)
+
+plt.scatter(range(len(linear_prediction)), linear_prediction)
+plt.xlabel("sample number")
+plt.ylabel("manual prediction")
+
+
+# Hey, this is weird, the values range between -700 to 300. This is not a probability between 0 and 1. This is because the logistic regression model uses the logit function to transform the linear regression equation into a probability. To do so, we use a sigmoid function:
+#  $$y = \frac{1}{1+e^{-x}}$$
+# 
+# Where $x$ is the linear regression equation.
+
+# In[50]:
+
+
+y_pred = 1 / (1 + np.exp(-linear_prediction)) 
+y_pred.describe()
 
 
 # **Visualizing Decision Trees**
@@ -518,7 +545,7 @@ reg_eq = 'y = -2.274 + 0.073*pelvic_incidence - 0.851*pelvic_tilt numeric + 0.32
 # 
 # Use the `tree.feature_importances_` method to find out about feature importance. This method will output an array with feature importances for every feature. 
 
-# In[23]:
+# In[ ]:
 
 
 tree.feature_importances_
