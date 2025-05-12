@@ -30,7 +30,7 @@
 #                 - WDBC-Malignant
 #                 - WDBC-Benign
 
-# In[5]:
+# In[34]:
 
 
 import os
@@ -62,11 +62,11 @@ print(f"My Seaborn version is: {sns.__version__}")
 # 
 # You should get something like this:
 
-# In[6]:
+# In[37]:
 
 
 file = "breast_cancer.parquet"
-file_path  = os.path.join(os.path.dirname(__file__), file)
+file_path  = os.path.join(os.getcwd(), file)
 df_cancer = pd.read_parquet(file_path)
 print(type(df_cancer))
 print(df_cancer.head())
