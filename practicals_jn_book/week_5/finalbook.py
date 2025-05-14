@@ -151,7 +151,7 @@ X = df[['pelvic_incidence', 'pelvic_tilt numeric', 'lumbar_lordosis_angle',
 # 
 # Alternatively we can use label encoding. This is also part of the pandas library and will be our method of choice. To encode the patient labels stored in `y`, we have to do a couple of things. Remember the dtype of the `'class'` column in `df`? If not check back the inspection you did in step 1. Label encoding only works with categorical data, so we have to change the dtype of `y` to categorical. 
 # 
-# First call `.astype('category')` on `y` to change the dtype. Make sure to declare the result back to `y`. Next, use `y.cat.codes` to change the labels in `y` to numbers. Again, make to sure to declare the result back to `y`. Now print `y` to your console, did you succeed? What number represents `'Abnormal'` patients? And what number `'Normal'` patients. 
+# First call `.astype('category')` on `y` to change the dtype. Make sure to declare the result back to `y`. Next, use `y.cat.codes` to change the labels in `y` to numbers. Again, make sure to declare the result back to `y`. Now print `y` to your console, did you succeed? What number represents `'Abnormal'` patients? And what number `'Normal'` patients. 
 
 # In[10]:
 
@@ -172,7 +172,7 @@ y = y.cat.codes
 # 
 # in which $w_{1}$ and $w_{2}$ are coefficients of features $X_{1}$ and $X_{1}$ respectively, and $c$ is the model constant or intercept. As sport & movement scientists, not only are we interested in the accuracy of such a model, but also in the importance of individual features. How much does the `'sacral_slope'` for example contribute to the patient being `'Normal'` or `'Abnormal'`? As the features are measured on different scales, differences in coefficients do not neccesarily mean anything to us. 
 # 
-# Even if you are not interested in the individual weights (which is a questionable decision), scaling could be crucial. As you have learned, machine learning models often optimize using gradient descent. Gradient descent tries to find the lowest location/cost in a multidimensional space. If they variables are on a different scale, the multidimensional space changes, which makes the model optimize for the variables with the biggest range, which in turn can lead to suboptimal performance of the model. 
+# Even if you are not interested in the individual weights (which is a questionable decision), scaling could be crucial. As you have learned, machine learning models often optimize using gradient descent. Gradient descent tries to find the lowest location/cost in a multidimensional space. If the variables are on a different scale, the multidimensional space changes, which makes the model optimize for the variables with the biggest range, which in turn can lead to suboptimal performance of the model. 
 # 
 # Therefore, we have to scale all the features to the same scale (note that: first of all, not all ML models require scaling, decision tree classification models & for example deliver interpretable results without scaling. Second of all, if you do not care about coefficients but only about accuracy, scaling is not really neccesary either. It is however best practice to do so). In this case, we will be using Logistic Regression, KNN **&** Decision Trees, for Logistic Regression and KNN we will use the scaled features, for Decision Trees the unscaled features.
 # 
@@ -198,7 +198,7 @@ y = y.cat.codes
 # 
 # Create variables called X_train, X_test, y_train, y_test by using the train_test_split function with X, y as arguments, a test_size of 30% and a random_state. Furthermore specify `stratify=y` to make sure `'Abnormal'` patients are present equally in both test and training set. 
 # 
-# Furthermore, Create variables called X_scaled_train, X_scaled_test, y_train, y_test by using the train_test_split function with X_scaled, y as arguments, and again a test_size of 30% and a random_state. We did not really have to create y_train and y_test again, as they are the same both time. However, as this is the output of the train_test_split function it is easiest to just save the same result again. 
+# Furthermore, create variables called X_scaled_train, X_scaled_test, y_train, y_test in the right order by using the StandardScaler function.
 
 # In[11]:
 
@@ -223,7 +223,7 @@ X_test_scaled = scaler.transform(X_test)
 # 
 # ### Assignment 4: Model fitting
 # 
-# Finally we came to the core of machine learning: Fitting a model to your data. Remember the common workflow from last week:
+# Finally, we are at the core of machine learning: Fitting a model to your data. Remember the common workflow from last week:
 # 
 # ```{note}
 # 1. instantiate the model function (i.e. `LogisticRegression()`) and declare it a convenient variable (i.e. `log_reg`). Specify the neccesary keyword arguments here. 
@@ -307,7 +307,7 @@ print(cv_tree["test_recall"])
 # 
 # Since `cross_validate` creates your train-test splits, you can not prevent data leakage with this function if you need to scale your data. If you include `X_scaled` in the `cross_validate` function, it has already learned based on the scaling parameters, and will split the data afterwards within the function. Although the functions of sklearn are often great, you lose the possibility to make small changes, like scaling after creating the train test split. 
 # 
-# Create your own function `scaled_cross_validation` that makes it possible to add models that need scaling, without any data leakages. Do not forget to create some nice docstrings in your function! Use your function to print the performance of the KNN and the decision tree classifiers.
+# Create your own function `scaled_cross_validation` that makes it possible to add models that need scaling, without any data leakages. Do not forget to create some nice docstrings in your function! Use your function to print the performance of the KNN and the logistic regression.
 # 
 # :::: {tip}
 # Use the `StratifiedKFold.split` and loop over each stratified fold to get the train and test indexes! 
@@ -433,7 +433,7 @@ probs_tree = tree.predict_proba(X_test)
 # 
 # For every model declare the results to 3 variables like the example below:
 # ```python
-# tpr_logreg, tpr_logreg, threshold_log_reg = roc_curve(y_test, probs_log_reg[:,1])
+# fpr_logreg, tpr_logreg, threshold_log_reg = roc_curve(y_test, probs_log_reg[:,1])
 # ```
 # 
 # you specify `[:,1]` because we only need column 1 from the probability array. The first index (`0`) gives the probability for the label 0, in our case Normal, and the second index (`1`) the probability for the label 1 or Abnormal.

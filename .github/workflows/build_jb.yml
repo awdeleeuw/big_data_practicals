@@ -2,6 +2,10 @@ on:
   pull_request:
     branches:
       - '*' # Pull requests to all branches
+  push:
+    branches:
+      - main
+
 
 jobs:
   build-jupyter-book:
