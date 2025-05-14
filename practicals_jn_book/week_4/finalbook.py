@@ -39,7 +39,7 @@ print(f"My Seaborn version is: {sns.__version__}")
 # 
 # First, import the csv file named 'FIFA_18_basic' as a pandas dataframe and declare it to a variable named 'df'. Next, inspect df using the .head(), .tail(), .describe(), and .info() methods in the IPython console. 
 
-# In[4]:
+# In[3]:
 
 
 path = os.getcwd()
@@ -71,9 +71,9 @@ df.describe()
 # 
 # First, visualize the distribution of the 'overall' player rating score by plotting a normalized histogram of these scores. Normalized histograms plot the bin-frequencies in percentages rather than in absolute numbers. 
 # 
-# One way to do this is by calling the .histplot() function from the *seaborn* library (imported as **sns**). As keyword arguments you will need the 'overall' column of the dataframe, and you will have to specify norm_hist=True. Don't worry about labels, titles or fancy colors, as this is not the goal of today's lesson. 
+# One way to do this is by calling the .histplot() function from the *seaborn* library (imported as **sns**). As keyword arguments you will need the 'overall' column of the dataframe. Don't worry about labels, titles or fancy colors, as this is not the goal of today's lesson. 
 
-# In[3]:
+# In[4]:
 
 
 sns.histplot(df['overall'], color='blue', label='Overall Rating', edgecolor=None, alpha=0.4, kde=True, bins=49)
@@ -91,7 +91,7 @@ plt.show()
 # 
 # Now, plot a pairplot that results in a 7x7 graph of the dataframe. Again, although we are sure there are some genuine Picasso's amongst you, don't let the artist within distract you from the main goal of today's practical. There will be plenty of opportunities to demonstrate you plot costumization skills in the final projects.
 
-# In[4]:
+# In[5]:
 
 
 sns.pairplot(df, vars=['pac', 'sho', 'pas', 'dri', 'def', 'phy', 'overall'])
@@ -118,20 +118,20 @@ plt.show()
 # 
 # We will tell you what these functions do later on, but first start with importing them. If you don't know exactly how this works, you can check the code below to see what to do.
 
-# In[5]:
+# In[39]:
 
 
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
-from sklearn.preprocessing import PolynomialFeatures
+from sklearn.preprocessing import PolynomialFeatures, StandardScaler
 
 
 # **Define X and y**
 # 
 # First, we have to create an outcome or target variable called (by convention) `y`. This is the dependent variable we will predict in the regression model. To achieve this, we will extract all values of the column containing dependent variable ('overall') and put them in a variable we call y
 
-# In[6]:
+# In[24]:
 
 
 y = df['overall'] # single square brackets, thus it is a pd.Series
@@ -139,7 +139,7 @@ y = df['overall'] # single square brackets, thus it is a pd.Series
 
 # Next, we have to create our input variable called (by convention) `X`, that is made up out of all the features or independent variables in our dataset. There are multiple ways to do this. The easiest way is by specifying all the column names of the features you want to select (remember double brackets). Declare the features to a variable called `X`. 
 
-# In[7]:
+# In[25]:
 
 
 X = df[['pac', 'sho', 'pas', 'dri', 'def', 'phy']] # double square brackets, thus it is a pd.DataFrame
@@ -155,7 +155,7 @@ X = df[['pac', 'sho', 'pas', 'dri', 'def', 'phy']] # double square brackets, thu
 # So no matter what kind of problem (classification or regression) you are facing, you will always need a training-dataset and a test-set. Therefore, we will be using the `train_test_split` function of sklearn. This function automatically creates a training and a test-dataset by randomly drawing samples from the data. By convention, we again have a pretty standardized way of doing this, and it is pretty much the same for all machine learning problems you will encounter in this course. 
 # ```
 
-# In[8]:
+# In[26]:
 
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
@@ -209,16 +209,16 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 # 
 # 2. Fit the model to your training-data by calling the `fit()` method on linreg. As arguments you will have to specify the `X_train` and `y_train` variables. 
 
-# In[21]:
+# In[ ]:
 
 
 linreg = LinearRegression()
-linreg.fit(X_train, y_train);
+linreg.fit(X_train, y_train)
 
 
 # Now that we have a trained model, we will have to evaluate the performance of our model on the test-set. To do so, we will first predict the values in the test set by calling the `predict()` method on linreg and specifying `X_test` as an argument. What happens here is that we used the trained model to predict `y` ('overall') for every row of data in the test based on the independent variables of that row. Predict the values in the test-set and declare them to variable called `y_pred`.
 
-# In[22]:
+# In[11]:
 
 
 y_pred = linreg.predict(X_test)
@@ -236,7 +236,7 @@ y_pred = linreg.predict(X_test)
 # 
 # Now print both the $R^2$ and RMSE in your console, how well did the model perform?
 
-# In[25]:
+# In[12]:
 
 
 R2 = linreg.score(X_test, y_test)
@@ -252,7 +252,7 @@ RMSE = np.sqrt(MSE)
 # 
 # Construct a string that represents the complete regression equation, what is the most important feature?
 
-# In[28]:
+# In[13]:
 
 
 coefs = linreg.coef_
@@ -270,7 +270,7 @@ linreg_eq = 'overall = 14.799 + 0.028*pac + 0.106*sho + 0.074*pas, 0.253*dri + 0
 # 
 # First, instantiate this function by calling `polynomial_2 = PolynomialFeatures(degree=2)`. This will result in the construction of a 2nd-order function (ofcourse, we could also specify degree=3 for a 3rd-order, or even degree=100 if you think that makes sense and have sufficient computing power to actually fit your data on that model).
 
-# In[29]:
+# In[14]:
 
 
 polynomial_2 = PolynomialFeatures(degree=2)
@@ -280,28 +280,39 @@ polynomial_2 = PolynomialFeatures(degree=2)
 # 
 # To achieve this, create a variable X_poly_train by calling `polynomial_2.fit_transform(X_train)`. Do the same for `X_test` and declare it to a variable called `X_poly_test`. 
 
-# In[30]:
+# In[ ]:
 
 
 X_poly_train = polynomial_2.fit_transform(X_train)
 X_poly_test = polynomial_2.fit_transform(X_test)
 
+print(X_train.shape, X_poly_train.shape)
+for idx in range(X_poly_train.shape[1]):
+    print(idx, X_poly_train[:, idx].mean().round(2), " +- ", X_poly_train[:, idx].std().round(2))
 
-# What we did here is transform our features with a polynomial function. Now we can fit our linear regression model as if it is a polynomial model, pretty cool right? To do so, just redo step 5 - 7 in similar fashion with different variable names (as you want to compare both models in the end). Have you forgetten the steps already? I will give you a short recap:
+
+# What we did here is transform our features with a polynomial function. Please check and figure out how we went from 6 features to 28 with a poly order of 2! Another thing to notice is that the first column of the transformed features is all 1's. This is because we need an intercept in our regression function. Secondly, you can also see that the poly increased the range of values in the features. This is because we are now dealing with polynomial features, and the range of values is much larger than the original features. This means that you always need to scale your features **after** applying the polynomial function, so that the features are on the same scale for the model fitting.
+# 
+# Now we can fit our linear regression model as if it is a polynomial model, pretty cool right? To do so, just redo step 5 - 7 in similar fashion with different variable names (as you want to compare both models in the end). Have you forgetten the steps already? I will give you a short recap:
 # 
 # 1. instantiate a `LinearRegression()` model and declare it a variable called `linreg_poly`
 # 2. fit linreg_poly to X_poly_train and y_train. 
 # 3. predict y used the trained model and declare the predictions to a variable called y_pred_poly
 # 4. compute $R^2$ and RMSE for the linreg_poly model and declare them to R2_Poly and RMSE_poly. 
 
-# In[31]:
+# In[40]:
+
+
+scaler_poly = StandardScaler()
+X_poly_train_scaled = scaler_poly.fit_transform(X_poly_train)
+X_poly_test_scaled = scaler_poly.transform(X_poly_test)
 
 
 linreg_poly = LinearRegression()
-linreg_poly.fit(X_poly_train, y_train)
-y_pred_poly = linreg_poly.predict(X_poly_test)
+linreg_poly.fit(X_poly_train_scaled, y_train)
+y_pred_poly = linreg_poly.predict(X_poly_test_scaled)
 
-R2_poly = linreg_poly.score(X_poly_test, y_test)
+R2_poly = linreg_poly.score(X_poly_test_scaled, y_test)
 MSE_poly = mean_squared_error(y_test, y_pred_poly)
 RMSE_poly = np.sqrt(MSE_poly)
 
@@ -311,7 +322,7 @@ RMSE_poly = np.sqrt(MSE_poly)
 # >Finally, it's time for the million dollar question, which model performs the best? Print the $R^2$ and RMSE Scores of both
 # >the linear and quadratic regression model to the console and find out for yourself. 
 
-# In[33]:
+# In[44]:
 
 
 get_ipython().run_cell_magic('capture', '', "print('Linear Regression Model: \\n')\nprint('R^2: %f' %R2)\nprint('RMSE: %f' %RMSE)\nprint('----------')\nprint('Quadratic Regression Model: \\n')\nprint('R^2: %f' %R2_poly)\nprint('RMSE: %f' %RMSE_poly)\n")
@@ -327,7 +338,7 @@ get_ipython().run_cell_magic('capture', '', "print('Linear Regression Model: \\n
 # 
 # Start with reading the sklearn [documentation](https://scikit-learn.org/stable/modules/linear_model.html) to understand what the different types of regression entail: 
 
-# In[ ]:
+# In[18]:
 
 
 df = pd.read_csv(os.path.join(path, "FIFA_18_complete.csv"), index_col=0)
@@ -345,7 +356,7 @@ df = pd.read_csv(os.path.join(path, "FIFA_18_complete.csv"), index_col=0)
 # You are not allowed to use someone's wage or release clause, nor use preferred position variables, images of a players head or anything similar. Focus on someones performance attributes. 
 # ```
 
-# In[37]:
+# In[19]:
 
 
 df.head()
@@ -355,7 +366,7 @@ df.describe()
 df.corr(numeric_only=True)
 
 
-# In[38]:
+# In[20]:
 
 
 X_cols = ["special", "age", "overall", "potential", "pac", 
@@ -365,7 +376,7 @@ X_cols = ["special", "age", "overall", "potential", "pac",
 y_col = ["eur_value"]
 
 
-# In[39]:
+# In[21]:
 
 
 from sklearn.linear_model import Lasso, Ridge
