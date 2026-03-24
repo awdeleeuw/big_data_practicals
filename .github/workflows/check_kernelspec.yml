@@ -1,0 +1,29 @@
+name: Check notebook kernelspecs
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  check-kernelspec:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install nbformat
+        run: pip install nbformat
+
+      - name: Check and fix kernelspecs
+        run: |
+          python .github/scripts/clean_kernelspecs.py
+          if ! git diff --exit-code; then
+            echo "ERROR: Notebooks had incorrect kernelspecs!"
+            echo "Please run .github/scripts/clean_kernelspecs.py locally, recommit, and push."
+            git diff
+            exit 1
+          fi

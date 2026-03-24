@@ -14,3 +14,4 @@ dependencies:
   - pyqt
   - nbconvert
   - jupyter-book=1.0
+  - nbformat
