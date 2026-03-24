@@ -24,5 +24,8 @@ jobs:
         run: |
           pip install -r practicals_jn_book/requirements.txt
       
+      - name: Clean notebook kernelspecs
+        run: python .github/scripts/clean_kernelspecs.py
+      
       - name: Build documentation (only on macos-latest)
         run: jupyter-book build practicals_jn_book --all -W
